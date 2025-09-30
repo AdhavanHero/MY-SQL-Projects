@@ -1,16 +1,16 @@
 # 📊 Retail Sales Analysis SQL Project
 
 ## 🎯 Project Objectives
--- Database Setup
--- Data Cleaning
--- Exploratory Data Analysis (EDA)
--- Business Analysis
+-- Database Setup.
+-- Data Cleaning.
+-- Exploratory Data Analysis (EDA).
+-- Business Analysis.
 
 ---------------------------------------------------------------------------------------------------
 
 ## 📂 Project Structure
 
-# 1. Database Setup
+### 1. Database Setup
 ```sql
 CREATE DATABASE p1_retail_db;
 USE p1_retail_db;
@@ -100,21 +100,21 @@ ORDER BY net_sale DESC;
 
 ### 4. Customer Demographics
 -- Query: Determine the average age of customers who purchased 'Beauty' products.
-```
+```sql
 SELECT ROUND(AVG(age), 2) AS avg_age
 FROM retail_sales
 WHERE category = 'Beauty';
 ```
 ### 5. High-Value Transactions
 -- Query: Find all transactions with a total sale amount greater than $1,000.
-```
+```sql
 SELECT *
 FROM retail_sales
 WHERE total_sale > 1000;
 ```
 ### 6. Transactions by Gender and Category
 -- Query: Count the total number of transactions for each gender within each product category.
-```
+```sql
 SELECT
     category,
     gender,
@@ -125,7 +125,7 @@ ORDER BY category, total_transactions DESC;
 ```
 ### 7. Best-Selling Month by Year
 -- Query: Identify the best-selling month in each year based on average sales.
-```
+```sql
 SELECT
     year,
     month,
@@ -144,7 +144,7 @@ WHERE rnk = 1;
 ```
 ### 8. Top 5 Customers by Sales
 -- Query: Find the top 5 customers with the highest total sales.
-```
+```sql
 SELECT
     customer_id,
     SUM(total_sale) AS total_sales
@@ -155,7 +155,7 @@ LIMIT 5;
 ```
 ### 9. Unique Customers per Category
 -- Query: Count the number of unique customers for each product category.
-```
+```sql
 SELECT
     category,
     COUNT(DISTINCT customer_id) AS unique_customers
@@ -165,7 +165,7 @@ ORDER BY unique_customers DESC;
 ```
 ### 10. Orders by Time of Day
 -- Query: Categorize and count the number of orders by time of day (Morning, Afternoon, Evening).
-```
+```sql
 WITH hourly_sales AS (
     SELECT
         *,
