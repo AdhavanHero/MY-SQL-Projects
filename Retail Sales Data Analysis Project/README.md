@@ -42,23 +42,27 @@ WHERE
     quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
 
 -- Temporarily disable safe updates to allow for mass deletion.
-```
+```sql
 SET SQL_SAFE_UPDATES = 0;
-
+```
 -- Delete records with any missing data.
+```sql
 DELETE FROM retail_sales
 WHERE
     sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR
     gender IS NULL OR age IS NULL OR category IS NULL OR
     quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
-
+```
 -- Re-enable safe updates.
+```sql
 SET SQL_SAFE_UPDATES = 1;
-
+```
 -- Find the total number of unique customers.
+```sql
 SELECT COUNT(DISTINCT customer_id) FROM retail_sales;
-
+```
 -- Identify all unique product categories.
+```sql
 SELECT DISTINCT category FROM retail_sales;
 ```
 ---------------------------------------------------------------------------------------------------
@@ -67,14 +71,14 @@ SELECT DISTINCT category FROM retail_sales;
 
 ### 1. Sales on a Specific Date
 -- Query: Retrieve all sales transactions that occurred on '2022-11-05'.
-```
+```sql
 SELECT *
 FROM retail_sales
 WHERE sale_date = '2022-11-05';
 ```
 ### 2. Transactions by Category and Quantity
 -- Query: Find all 'Clothing' transactions in November 2022 where the quantity sold was 4 or more.
-```
+```sql
 SELECT *
 FROM retail_sales
 WHERE
@@ -84,7 +88,7 @@ WHERE
 ```
 ### 3. Total Sales per Category
 -- Query: Calculate the total sales and number of orders for each product category.
-```
+```sql
 SELECT
     category,
     SUM(total_sale) AS net_sale,
