@@ -1,6 +1,6 @@
 # 📊 Retail Sales Analysis SQL Project
 
-### 🎯 Project Objectives
+## 🎯 Project Objectives
 -- Database Setup
 -- Data Cleaning
 -- Exploratory Data Analysis (EDA)
@@ -10,7 +10,7 @@
 
 ## 📂 Project Structure
 
-## 1. Database Setup
+# 1. Database Setup
 ```sql
 CREATE DATABASE p1_retail_db;
 USE p1_retail_db;
