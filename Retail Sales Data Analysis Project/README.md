@@ -11,6 +11,7 @@
 ## 📂 Project Structure
 
 ### 1. Database Setup
+```sql
 CREATE DATABASE p1_retail_db;
 USE p1_retail_db;
 
@@ -27,7 +28,6 @@ CREATE TABLE retail_sales (
     cogs FLOAT,
     total_sale FLOAT
 );
-
 ### 2. Data Cleaning & Exploration
 
 -- Count all records to determine the dataset size.
