@@ -30,6 +30,18 @@ CREATE TABLE retail_sales (
     total_sale FLOAT
 );
 ```
+Importing Data using a Database Management Tool
+
+Simple Steps for Importing a Dataset
+
+   1) Right-click on the retail_sales table.
+
+   2) Select Import Data or a similar option.
+
+   3) Choose your Retail Sales Analysis_utf.csv file.
+
+   4) Configure the import settings (delimiter: ,, header: Yes, etc.) Proceed with the import.
+
 ### 2. Data Cleaning & Exploration
 
 Count all records to determine the dataset size.
