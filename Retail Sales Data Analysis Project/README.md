@@ -28,6 +28,7 @@ CREATE TABLE retail_sales (
     cogs FLOAT,
     total_sale FLOAT
 );
+```
 ### 2. Data Cleaning & Exploration
 
 -- Count all records to determine the dataset size.
@@ -41,6 +42,7 @@ WHERE
     quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
 
 -- Temporarily disable safe updates to allow for mass deletion.
+```
 SET SQL_SAFE_UPDATES = 0;
 
 -- Delete records with any missing data.
@@ -58,28 +60,31 @@ SELECT COUNT(DISTINCT customer_id) FROM retail_sales;
 
 -- Identify all unique product categories.
 SELECT DISTINCT category FROM retail_sales;
-
+```
 ---------------------------------------------------------------------------------------------------
 
 ## 📈 Data Analysis & Insights
 
 ### 1. Sales on a Specific Date
 -- Query: Retrieve all sales transactions that occurred on '2022-11-05'.
+```
 SELECT *
 FROM retail_sales
 WHERE sale_date = '2022-11-05';
-
+```
 ### 2. Transactions by Category and Quantity
 -- Query: Find all 'Clothing' transactions in November 2022 where the quantity sold was 4 or more.
+```
 SELECT *
 FROM retail_sales
 WHERE
     category = 'Clothing'
     AND sale_date BETWEEN '2022-11-01' AND '2022-11-30'
     AND quantity >= 4;
-
+```
 ### 3. Total Sales per Category
 -- Query: Calculate the total sales and number of orders for each product category.
+```
 SELECT
     category,
     SUM(total_sale) AS net_sale,
@@ -87,21 +92,25 @@ SELECT
 FROM retail_sales
 GROUP BY category
 ORDER BY net_sale DESC;
+```
 
 ### 4. Customer Demographics
 -- Query: Determine the average age of customers who purchased 'Beauty' products.
+```
 SELECT ROUND(AVG(age), 2) AS avg_age
 FROM retail_sales
 WHERE category = 'Beauty';
-
+```
 ### 5. High-Value Transactions
 -- Query: Find all transactions with a total sale amount greater than $1,000.
+```
 SELECT *
 FROM retail_sales
 WHERE total_sale > 1000;
-
+```
 ### 6. Transactions by Gender and Category
 -- Query: Count the total number of transactions for each gender within each product category.
+```
 SELECT
     category,
     gender,
@@ -109,9 +118,10 @@ SELECT
 FROM retail_sales
 GROUP BY category, gender
 ORDER BY category, total_transactions DESC;
-
+```
 ### 7. Best-Selling Month by Year
 -- Query: Identify the best-selling month in each year based on average sales.
+```
 SELECT
     year,
     month,
@@ -127,9 +137,10 @@ FROM
     GROUP BY 1, 2
     ) AS t1
 WHERE rnk = 1;
-
+```
 ### 8. Top 5 Customers by Sales
 -- Query: Find the top 5 customers with the highest total sales.
+```
 SELECT
     customer_id,
     SUM(total_sale) AS total_sales
@@ -137,18 +148,20 @@ FROM retail_sales
 GROUP BY customer_id
 ORDER BY total_sales DESC
 LIMIT 5;
-
+```
 ### 9. Unique Customers per Category
 -- Query: Count the number of unique customers for each product category.
+```
 SELECT
     category,
     COUNT(DISTINCT customer_id) AS unique_customers
 FROM retail_sales
 GROUP BY category
 ORDER BY unique_customers DESC;
-
+```
 ### 10. Orders by Time of Day
 -- Query: Categorize and count the number of orders by time of day (Morning, Afternoon, Evening).
+```
 WITH hourly_sales AS (
     SELECT
         *,
@@ -165,7 +178,7 @@ SELECT
 FROM hourly_sales
 GROUP BY shift
 ORDER BY total_orders DESC;
-
+```
 ---------------------------------------------------------------------------------------------------
 
 ## ✅ Conclusion
