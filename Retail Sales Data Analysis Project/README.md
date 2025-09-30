@@ -1,6 +1,7 @@
 # 📊 Retail Sales Analysis SQL Project
 
 ## 🎯 Project Objectives
+
 -- Database Setup.
 -- Data Cleaning.
 -- Exploratory Data Analysis (EDA).
