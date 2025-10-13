@@ -18,7 +18,7 @@ This project demonstrates the implementation of a Library Management System usin
 ## Project Structure
 
 ### 1. Database Setup
-![ERD](https://github.com/najirh/Library-System-Management---P2/blob/main/library_erd.png)
+![ERD]([https://github.com/najirh/Library-System-Management---P2/blob/main/library_erd.png](https://github.com/AdhavanHero/MY-SQL-Projects/blob/main/Library%20System%20Management/ERD.png)
 
 - **Database Creation**: Created a database named `library_db`.
 - **Table Creation**: The database includes six core tables:
