@@ -30,7 +30,7 @@ issued_status
 return_status
 Each table has been normalized and linked through foreign keys for data integrity.
 
-'''sql
+```sql
 CREATE DATABASE library_db;
 
 -- Table: Branch
@@ -92,22 +92,25 @@ CREATE TABLE return_status (
     return_book_isbn VARCHAR(50),
     FOREIGN KEY (return_book_isbn) REFERENCES books(isbn)
 );
-'''
+```
+
 and importing the datasets accoding to the table manually
 
 ### ✏️ 2. CRUD Operations
 🟢 Task 1 – Create a New Book Record
 Insert a new book titled To Kill a Mockingbird into the books table.
-
+```sql
 INSERT INTO books(isbn, book_title, category, rental_price, status, author, publisher)
 VALUES('978-1-60129-456-2', 'To Kill a Mockingbird', 'Classic', 6.00, 'yes', 'Harper Lee', 'J.B. Lippincott & Co.');
+```
 
 🟡 Task 2 – Update Member Address
 Update the address of member C103.
-
+```sql
 UPDATE members
 SET member_address = '125 Oak St'
 WHERE member_id = 'C103';
+```
 
 🔴 Task 3 – Delete Issued Record
 Remove an issued record by issued_id.
@@ -117,17 +120,20 @@ WHERE issued_id = 'IS121';
 
 🔍 Task 4 – Retrieve Books Issued by a Specific Employee
 Find all books issued by employee E101.
-
+```sql
 SELECT * FROM issued_status
 WHERE issued_emp_id = 'E101';
+```
 
 👥 Task 5 – List Members Who Issued More Than One Book
 Group by employee ID to find multiple issuances.
-
+```sql
 SELECT issued_emp_id, COUNT(*) AS total_issued
 FROM issued_status
 GROUP BY issued_emp_id
 HAVING COUNT(*) > 1;
+```
 
 
+```
 
