@@ -280,14 +280,14 @@ JOIN members AS m ON ist.issued_member_id = m.member_id
 WHERE ist.issued_date >= CURRENT_DATE - INTERVAL '60 days';
 ```
 
-##🧾 Final Notes
-###✅ Skills Demonstrated:
+## 🧾 Final Notes
+### ✅ Skills Demonstrated:
 
-Database design & schema normalization
-CRUD and CTAS operations
-Stored procedures in PL/pgSQL
+Database design & schema normalization, 
+CRUD and CTAS operations, 
+Stored procedures in PL/pgSQL, And
 Analytical and join-based SQL queries
 
-###✅ Key Takeaways:
+### ✅ Key Takeaways:
 This project demonstrates practical SQL knowledge to manage a library efficiently—tracking members, books, staff, and branch performance through meaningful data analysis.
 
