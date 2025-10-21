@@ -1,0 +1,228 @@
+Create database Animesql
+use Animesql
+
+# https://www.kaggle.com/datasets/duongtruongbinh/manga-and-anime-dataset data set link
+
+CREATE TABLE Animedata(
+    -- Primary Descriptive Fields
+    AnimeID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(500),
+    -- Performance Metrics
+    Score FLOAT,          -- Use FLOAT for decimal scores (e.g., 9.14)
+    Vote INT,             -- Total votes
+    Ranked INT,           -- Integer rank (1, 2, 3...)
+    Popularity INT,       -- Integer popularity rank (1, 2, 3...)
+    -- Timing and Status
+    Episodes VARCHAR(50), -- Kept as VARCHAR to handle 'Unknown' or 'N/A'
+    Status VARCHAR(50),
+    Aired VARCHAR(200),
+    Premiered VARCHAR(50),
+    -- Production and Licensing (These fields contain complex lists/strings, so use large VARCHAR)
+    Producers VARCHAR(2000),
+    Licensors VARCHAR(2000),
+    Studios VARCHAR(1000),
+    Source VARCHAR(50),     -- e.g., 'Manga', 'Original', 'Light novel'
+    Duration VARCHAR(100),
+    -- Rating
+    Rating VARCHAR(100)     -- e.g., 'R - 17+'
+);
+
+select * from Animedata;
+
+
+# 🎯 Anime Performance and Trend Analysis
+#🧩 Part 1: Simple Aggregations and Top Lists (Performance)
+# 1.Find the top 5 highest-rated anime with over 100,000 votes.
+
+SELECT Vote, AnimeID, Title
+FROM animedata where vote > 100000
+order by 1 desc limit 5;
+
+#2 Compare the average score of short-form anime (1–12 episodes) vs long-form anime (50+ episodes).
+
+SELECT
+  CASE
+    WHEN CAST(Episodes AS UNSIGNED) BETWEEN 1 AND 12 THEN 'Short Anime'
+    WHEN CAST(Episodes AS UNSIGNED) >= 50 THEN 'Long Anime' #cast used seperate txt like 12 from te varchar
+    ELSE 'Other'
+  END AS Anime_Type,
+  AVG(Score) AS Average_Score
+FROM animedata
+WHERE Score IS NOT NULL
+  AND Episodes != 'Unknown'
+  AND Episodes != '-'
+GROUP BY Anime_Type; 
+
+#3 Most Common Source: What is the most frequent source material
+
+select source, count(*) as Title_Count from Animedata group by 1 order by 2 desc limit 1
+
+#4 Compare the average score between the most restrictive and most general rating categories.
+
+SELECT
+  Rating,
+  AVG(Score) AS Avg_Score
+FROM
+  animedata
+WHERE
+  Rating IN ('R - 17+ (violence & profanity)', 'PG-13 - Teens 13 or older')
+  AND Score IS NOT NULL
+GROUP BY
+  Rating;
+
+# 5 Find how many titles have a score below the overall average score.
+
+seLECT COUNT(*) FROM animedata WHERE Score < (SELECT AVG(Score) FROM animedata WHERE Score IS NOT NULL);
+
+#🚀 Part 2: Advanced Analysis (Trends and Studio Impact)
+#These tasks explore popularity, format differences, longevity, and decade-based performance.
+
+# 6 Identify the top 3 studios with the highest average scores (only include studios with 10+ titles).
+
+SELECT
+  Studios,
+  COUNT(*) AS Title_Count,
+  AVG(Score) AS Avg_Score
+FROM
+  animedata
+WHERE
+  Studios NOT IN ('None found, add some', 'None')
+  AND Score IS NOT NULL
+GROUP BY
+  Studios
+HAVING
+  Title_Count >= 10
+ORDER BY
+  Avg_Score DESC
+LIMIT 3;
+
+# 7 Analyze annual release trends and average scores for years with 50+ releases.
+
+SELECT
+  RIGHT(Premiered, 4) AS Premier_Year,
+  COUNT(*) AS Annual_Releases,
+  AVG(Score) AS Annual_Avg_Score
+FROM
+  animedata
+SELECT
+  RIGHT(Premiered, 4) AS Premier_Year,
+  COUNT(*) AS Annual_Releases,
+  AVG(Score) AS Annual_Avg_Score
+FROM
+  animedata
+WHERE
+  Premiered IS NOT NULL
+  AND Score IS NOT NULL
+GROUP BY
+  Premier_Year
+HAVING
+  Annual_Releases >= 5 
+ORDER BY
+  Premier_Year DESC;
+
+# 8 Find which Source material has the highest total vote count (popularity indicator)
+
+SELECT Source, SUM(Vote) AS Total_Votes FROM animedata GROUP BY Source ORDER BY Total_Votes DESC LIMIT 3;
+
+# 9 List anime with high scores (8.5+) but low votes (<5,000) to identify underrated gems.
+
+SELECT Title, Score, Vote, Premiered FROM animedata WHERE Score >= 8.5 AND Vote < 5000 ORDER BY Vote;
+
+# 10 Find the most common Source material used by the top-rated studio identified in Task 6.
+
+SELECT
+  Source,
+  COUNT(*) AS Source_Count
+FROM
+  animedata
+WHERE
+  -- 1. Finds the specific studio name determined as the highest-rated in a subquery
+  Studios = (
+    SELECT
+      Studios
+    FROM
+      animedata
+    WHERE
+      Studios NOT IN ('None found, add some', 'None')
+      AND Score IS NOT NULL
+    GROUP BY
+      Studios
+    HAVING
+      COUNT(*) >= 10 -- Only studios with 10+ titles
+    ORDER BY
+      AVG(Score) DESC
+    LIMIT 1 -- Selects only the single best studio
+  )
+GROUP BY
+  Source
+ORDER BY
+  Source_Count DESC
+LIMIT 1;
+
+# 📈 Part 3: Deeper Dive Analysis (Advanced Insights)
+
+# 11 Find which Source material generates the highest overall popularity (lowest average rank number).
+
+SELECT Source, AVG(Popularity) AS Avg_Popularity_Rank, COUNT(*) AS Title_Count FROM animedata 
+WHERE Source IS NOT NULL 
+GROUP BY Source HAVING 
+Title_Count > 50 
+ORDER BY Avg_Popularity_Rank ASC LIMIT 5;
+
+# 12 Compare the average score of anime with exactly 1 episode (typically movies/OVAs) versus the average score of all other anime titles.
+
+SELECT
+  CASE
+    WHEN Episodes = '1' THEN 'Movie/OVA'
+    ELSE 'Series/Other'
+  END AS Format,
+  AVG(Score) AS Avg_Score
+FROM
+  animedata
+WHERE
+  Score IS NOT NULL
+  AND Episodes REGEXP '^[0-9]+$' -- Ensures 'Episodes' contains only numeric values
+GROUP BY
+  Format;
+  
+  # 13 Calculate the average score for long-running anime (100+ episodes).
+  
+  SELECT
+  COUNT(Title) AS Long_Running_Count,
+  AVG(Score) AS Avg_Score_Over_100_Eps
+FROM
+  animedata
+WHERE
+  Score IS NOT NULL
+  AND Episodes REGEXP '^[0-9]+$' -- Ensures 'Episodes' contains only numbers
+  AND CAST(Episodes AS UNSIGNED) >= 100; -- Converts Episodes to a number for comparison
+  
+# 14 Segment the data by decade (e.g., 2000s, 2010s, 2020s) and find the decade with the highest average score.
+
+SELECT
+  FLOOR(RIGHT(Premiered, 4) / 10) * 10 AS Decade_Start_Year,
+  AVG(Score) AS Avg_Score
+FROM
+  animedata
+WHERE
+  Premiered IS NOT NULL
+  AND LENGTH(Premiered) = 9  -- Still needed to ensure the RIGHT() pulls a clean year
+  AND Score IS NOT NULL
+GROUP BY
+  Decade_Start_Year
+ORDER BY
+  Avg_Score DESC;
+  
+  # 15 Find the top 5 highest-ranked anime with fewer than 10,000 votes (critically acclaimed but niche titles).
+  
+  SELECT
+  Title,
+  ranked,
+  Vote,
+  Score
+FROM
+  animedata
+WHERE Vote < 10000        -- Filter 1: Low popularity by vote count
+AND Ranked IS NOT NULL -- Filter 2: Must have a critical Rank
+ORDER BY  Ranked ASC            -- Orders by the best (lowest) Rank number
+LIMIT 5;
