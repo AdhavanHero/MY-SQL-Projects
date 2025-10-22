@@ -239,3 +239,14 @@ GROUP BY
 ORDER BY
   Avg_Score DESC;
 ```
+### 📊 Conclusion and Key Findings
+
+- **Studio Quality and Specialization:** Queries 6 and 10 link production quality (high average scores) directly to studio identity and their preferred source material. This determines if top studios succeed by specializing (e.g., only adapting Manga) or by excelling in original content.
+
+- **The Popularity vs. Acclaim Disconnect:** Queries 9 and 15 actively seek "underrated gems"—titles with low exposure (low votes) but high critical appeal (high score/rank). This contrasts sharply with widely popular titles identified in Query 1.
+
+- **Source Material Success:** Analysis of average popularity (Query 11) reveals which original formats (Manga, Light Novels, Original) translate most successfully into popular anime series, guiding content creation strategy.
+
+- **Format and Longevity Impact:** Comparisons across episode counts (Queries 2, 12, 13) answer whether short-form, long-form, or film formats lead to better average scores. This determines if consistency (long-running shows) generally sacrifices quality compared to shorter, tighter narratives.
+
+-  **Historical Trends and Demographics:** The decade and annual trend analysis (Queries 7 and 14) identifies periods of peak production volume and peak critical quality, while the rating comparisons (Query 4) reveal score differences across target audiences (e.g., mature vs. mainstream).
